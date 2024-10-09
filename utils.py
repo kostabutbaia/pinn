@@ -2,7 +2,7 @@ import torch
 import numpy as np
 
 def get_all_points(x_space, t_space) -> torch.tensor:
-    X, T = np.meshgrid(x_space, t_space)
+    X, T = np.meshgrid(x_space[1:-1], t_space[1:-1])
     X, T = np.transpose([X.flatten()]), np.transpose([T.flatten()])
 
     X = torch.tensor(X, dtype=torch.float32, requires_grad=True)
