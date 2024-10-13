@@ -118,15 +118,15 @@ for epoch in range(epochs):
 
     losses.append(loss.detach().numpy())
 
-    loss_tensor = torch.stack([pde_loss, boundary_loss])
-    inverse_loss_tensor = 1 / loss_tensor
+    # loss_tensor = torch.stack([pde_loss, boundary_loss])
+    # inverse_loss_tensor = 1 / loss_tensor
 
-    # Normalize so that the weights sum to 1 (like softmax but inversely scaled)
-    lambdas = inverse_loss_tensor / torch.sum(inverse_loss_tensor)
+    # # Normalize so that the weights sum to 1 (like softmax but inversely scaled)
+    # lambdas = inverse_loss_tensor / torch.sum(inverse_loss_tensor)
     
     # Assign the softmax results to lambda_pde and lambda_b
-    lambda_pde = lambdas[0].detach()  # Weight for PDE loss
-    lambda_b = lambdas[1].detach()    # Weight for boundary loss
+    # lambda_pde = lambdas[0].detach()  # Weight for PDE loss
+    # lambda_b = lambdas[1].detach()    # Weight for boundary loss
 
     # Backpropagate
     loss.backward()
