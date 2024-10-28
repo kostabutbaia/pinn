@@ -10,6 +10,11 @@ def get_all_points(x_space, t_space) -> torch.tensor:
 
     return X, T
 
+def split_array_N(arr: list[float], N: int) -> np.ndarray:
+    if len(arr) % N != 0:
+        raise Exception(f'cannot evenly divide arr with each array of length {N}')
+    return np.array([arr[i*N:(i+1)*N] for i in range(int(len(arr)/N))])
+
 
 def test():
     Nx = 4

@@ -17,7 +17,7 @@ N = 30
 
 sigma = 0.001
 A = 800
-num_hidden_nodes=20
+num_hidden_nodes=40
 
 epochs = 50000
 
@@ -26,7 +26,7 @@ epochs_bf = 10000
 name = f'bound_enforced_{epochs}'
 
 
-a = 400
+a = 40**2
 b = 0
 
 """ PINNs """
@@ -189,6 +189,7 @@ text = fr"""
     $u(x,0)=0 \quad u(x, 1)=0 \quad u(0,y)=0 \quad u(1, y)=0$
 
     Where:
+    - k={a}+i{b}
     - A={A}
     - $\sigma$={sigma}
 

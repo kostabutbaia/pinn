@@ -11,14 +11,14 @@ from matplotlib import cm
 from utils import get_all_points
 
 show = False
-N = 30
-k = 20
+N = 80
+k = 40
 
 sigma = 0.001
 A = 800
-num_hidden_nodes=15
+num_hidden_nodes=50
 
-epochs = 500
+epochs = 50000
 epochs_bf = 10000
 
 name = f'bound_enforced_{epochs}'

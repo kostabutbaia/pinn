@@ -10,9 +10,9 @@ from matplotlib import cm
 
 from utils import get_all_points
 
-N = 30
+N = 50
 
-k = 4 * np.pi
+k = 15
 lambda_b = 100
 lambda_pde = 1
 
@@ -24,38 +24,31 @@ y_space = np.linspace(0, 1, N)
 x_train, y_train = get_all_points(x_space, y_space)
 
 class Model(nn.Module):
-    def __init__(self, in_features=2, h1=num_hidden_nodes, h2=num_hidden_nodes, h3=num_hidden_nodes, h4=num_hidden_nodes, h5=num_hidden_nodes, h6=num_hidden_nodes, h7=num_hidden_nodes, h8=num_hidden_nodes, out_features=1):
+    def __init__(self, in_features=2, h1=num_hidden_nodes, h2=num_hidden_nodes, h3=num_hidden_nodes, h4=num_hidden_nodes, out_features=1):
         super().__init__()
         self.omega = 30
         self.fc1 = nn.Linear(in_features, h1)
         self.fc2 = nn.Linear(h1, h2)
         self.fc3 = nn.Linear(h2, h3)
-        # self.fc4 = nn.Linear(h3, h4)
-        # self.fc5 = nn.Linear(h4, h5)
-        # self.fc6 = nn.Linear(h5, h6)
-        # self.fc7 = nn.Linear(h6, h7)
-        # self.fc8 = nn.Linear(h7, h8)
-        self.out = nn.Linear(h8, out_features)
-        self.apply(self.init_weights_siren)
-    
-    def init_weights_siren(self, m):
+        self.fc4 = nn.Linear(h3, h4)
+        self.out = nn.Linear(h4, out_features)
+
+        self.apply(self.init_weights)
+
+    def init_weights(self, m):
         if isinstance(m, nn.Linear):
-            m.weight.data.uniform_(-1 / self.omega, 1 / self.omega)
-            m.bias.data.uniform_(-1 / self.omega, 1 / self.omega)
+            torch.nn.init.xavier_uniform_(m.weight)
+            if m.bias is not None:
+                m.bias.data.fill_(0.0)
         
     def forward(self, x, y):
         u = torch.cat([x, y], dim=1)
-        u = self.omega * u
         u = torch.sin(self.fc1(u))
         u = torch.sin(self.fc2(u))
         u = torch.sin(self.fc3(u))
-        # u = torch.sin(self.fc4(u))
-        # u = torch.sin(self.fc5(u))
-        # u = torch.sin(self.fc6(u))
-        # u = torch.sin(self.fc7(u))
-        # u = torch.sin(self.fc8(u))
+        u = torch.sin(self.fc4(u))
         u = self.out(u)
-        u = x*(x-1)*y*(y-1)*u
+        # u = x*(x-1)*y*(y-1)*u
         return u
 
 model = Model()
