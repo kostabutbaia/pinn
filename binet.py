@@ -19,7 +19,7 @@ k = 15
 N = 50
 N_TRAIN = 50
 
-epochs = 1000
+epochs = 5000
 
 plot_points_num = 25
 
@@ -29,7 +29,7 @@ cords = torch.linspace(0.0001, 0.9999, N)
 ones = torch.full((N, 1), 1)
 zeros = torch.zeros(N, 1)
 
-train_cords = torch.linspace(0.0001, 0.9999, N_TRAIN)
+train_cords = torch.linspace(0, 1, N_TRAIN)
 ones_train = torch.full((N_TRAIN, 1), 1)
 zeros_train = torch.zeros(N_TRAIN, 1)
 
@@ -93,7 +93,7 @@ def boundary_condition(points):
     result = torch.zeros(points.shape[0], dtype=torch.float)
     for i, point in enumerate(points):
         if abs(point[1] - 1.0) < 0.001:
-            result[i] = 30*torch.sin(2 * np.pi * point[0])
+            result[i] = torch.sin(2 * np.pi * point[0])
         else:
             result[i] == 0
 
@@ -196,13 +196,18 @@ x_space = np.linspace(0, 4, 4 * N_TRAIN)
 
 u_pred = model(train_boundary_points)
 
-plt.plot(x_space, 1/2*model.h(train_boundary_points).view(1,-1)[0].detach().numpy() + u_pred.detach().numpy())
+plt.plot(x_space, 1/2*model.h(train_boundary_points).view(1,-1)[0].detach().numpy() + u_pred.detach().numpy(), 'b')
 
 plt.grid()
-plt.axvline(x=1, color='red', linestyle='--')
-plt.axvline(x=2, color='red', linestyle='--')
-plt.axvline(x=3, color='red', linestyle='--')
-
+plt.axvline(x=1, color='black', linestyle='--')
+plt.axvline(x=2, color='black', linestyle='--')
+plt.axvline(x=3, color='black', linestyle='--')
+plt.ylim([-1, 1])
+plt.xlim([0, 4])
+plt.text(0.5, 1.05, 'Top Edge', fontsize=10, color='black', ha='center')
+plt.text(1.5, 1.05, 'Bottom Edge', fontsize=10, color='black', ha='center')
+plt.text(2.5, 1.05, 'Left Edge', fontsize=10, color='black', ha='center')
+plt.text(3.5, 1.05, 'Right Edge', fontsize=10, color='black', ha='center')
 plt.show()
 
 values = model.forward(points_tensor)
